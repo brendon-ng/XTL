@@ -9,11 +9,8 @@ public class App {
         inbound_connectors connector = new app.inbound_connectors();
         System.out.println(connector.getDataSource());
         BufferedReader r = connector.readFile("/resources/SparkSQLOutputData.csv");
-        String line;
-        while ((line = r.readLine()) != null) {
-            System.out.println(line);
-            System.out.flush();
-        }
+        // convert to json
+        connector.convertCSVtoJSON(r);
         r.close();
     }
 }

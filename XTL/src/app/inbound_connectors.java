@@ -1,6 +1,9 @@
 package app;
 
 import java.io.*;
+import java.util.*;
+import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.csv.*;
 
 // enum for supported data sources
 enum Source {
@@ -45,6 +48,27 @@ public class inbound_connectors {
         BufferedReader buffer = new BufferedReader(new InputStreamReader(stream));
         return buffer;
         // return null;
+    }
+
+    // Convert CSV file to JSON file, save that file in outbound_data folder
+    public void convertCSVtoJSON(BufferedReader r) throws IOException {
+        // https://www.tutorialspoint.com/convert-csv-to-json-using-the-jackson-library-in-java
+        // https://stackoverflow.com/questions/19766266/directly-convert-csv-file-to-json-file-using-the-jackson-library
+
+        // NEED ABSOLUTE PATH FROM ROOT XTL DIRECTORY
+        File input = new File("XTL/src/resources/SparkSQLOutputData.csv");
+        File output = new File("outbound_data/sparksql.json");
+
+        CsvSchema bootstrap = CsvSchema.emptySchema().withHeader();
+        CsvMapper csvMapper = new CsvMapper();
+
+        MappingIterator<Map<?, ?>> mappingIterator = csvMapper.readerFor(Map.class).with(bootstrap).readValues(input);
+
+        List<Map<?, ?>> data = mappingIterator.readAll();
+
+        // write to json file
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.writeValue(output, data);
     }
 
     public static void main() {
