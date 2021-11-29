@@ -5,7 +5,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-
 public class App {
     private static JSONObject config;
     private static Connector importer;
@@ -30,7 +29,7 @@ public class App {
             JSONObject transformationConfig = (JSONObject) config.get("transformation");
             JSONObject exporterConfig = (JSONObject) config.get("exporter");
 
-            switch((String) importerConfig.get("platform")){
+            switch ((String) importerConfig.get("platform")) {
                 case "SPARKSQL":
                     importer = new SparkSQLImporter(importerConfig);
                     break;
@@ -39,9 +38,9 @@ public class App {
                     break;
             }
 
-            switch((String) exporterConfig.get("platform")){
+            switch ((String) exporterConfig.get("platform")) {
                 default:
-                    System.out.println("Invalid Importer Platform");
+                    System.out.println("Invalid Exporter Platform");
                     break;
             }
         } catch (FileNotFoundException e) {
@@ -53,8 +52,8 @@ public class App {
         }
 
         importer.execute();
-        //transformation.execute();
-        //exporter.execute();
+        // transformation.execute();
+        // exporter.execute();
     }
 
     public static void main(String[] args) throws IOException {

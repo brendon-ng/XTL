@@ -2,22 +2,23 @@ import java.io.IOException;
 import org.apache.spark.sql.*;
 import org.json.simple.JSONObject;
 
-public class SparkSQLImporter extends Connector{
+public class SparkSQLImporter extends Connector {
     private String executionMode;
     private String inputFilePath;
     private String query;
 
-    public SparkSQLImporter(JSONObject config){
+    public SparkSQLImporter(JSONObject config) {
         super(config);
+        parseJSON(config);
     }
 
-    protected void parseJSON(JSONObject config){
-        String executionMode = (String) config.get("exectionMode");
-        String inputFilePath = (String) config.get("inputFilePath");
-        String query = (String) config.get("query");
+    protected void parseJSON(JSONObject config) {
+        this.executionMode = (String) config.get("executionMode");
+        this.inputFilePath = (String) config.get("inputFilepath");
+        this.query = (String) config.get("query");
     }
 
-    public void execute(){
+    public void execute() {
         // connect to spark sql url, run query on it
         SparkSession spark = SparkSession.builder().appName("XTL Spark SQL app").master(executionMode).getOrCreate();
         Dataset<Row> df = spark.read().option("header", "true").csv(inputFilePath);
