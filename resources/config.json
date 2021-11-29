@@ -1,0 +1,6 @@
+{
+    "platform": "SPARKSQL",
+    "executionMode": "local",
+    "inputFilepath": "resources/SparkSQLOutputData.csv",
+    "query": "SELECT service FROM XTLInput"
+}
