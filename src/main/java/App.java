@@ -1,4 +1,3 @@
-package com.test.xtlmaven;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
