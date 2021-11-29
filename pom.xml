@@ -4,10 +4,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.xtl</groupId>
-  <artifactId>XTLMaven</artifactId>
+  <artifactId>XTL</artifactId>
   <version>1.0</version>
 
-  <name>XTL-Maven</name>
+  <name>XTL</name>
   <!-- FIXME change it to the project's website -->
   <url>http://www.example.com</url>
 

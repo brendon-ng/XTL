@@ -3,6 +3,10 @@ package app;
 import java.io.BufferedReader;
 
 public class App {
+    private:
+        InboundConnector in;
+        OutboundConnector out;
+        
     public static void main(String[] args) throws Exception {
         app.inbound_connectors.main();
 
