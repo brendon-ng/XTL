@@ -1,9 +1,8 @@
 {
     "importer": {
         "platform": "HIVE",
-        "executionMode": "local",
-        "inputFilepath": "resources/SparkSQLOutputData.csv",
-        "query": "SELECT service FROM XTLInput"
+        "port": "10000",
+        "query": "SELECT * FROM pokes"
     },
     "exporter": {
         "platform": "Coming Soon"

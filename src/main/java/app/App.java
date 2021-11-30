@@ -3,6 +3,8 @@ package app;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+
+import org.apache.log4j.BasicConfigurator;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -63,6 +65,9 @@ public class App {
     }
 
     public static void main(String[] args) throws IOException {
+        // for hive
+        BasicConfigurator.configure();
+
         run(args);
     }
 }
