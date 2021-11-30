@@ -1,4 +1,5 @@
-import java.io.IOException;
+package app;
+
 import org.apache.spark.sql.*;
 import org.json.simple.JSONObject;
 

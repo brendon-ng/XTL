@@ -1,11 +1,13 @@
-import org.json.simple.JSONObject;
+package app;
 
+import org.json.simple.JSONObject;
 
 public abstract class Connector {
     private JSONObject config;
+
     protected abstract void parseJSON(JSONObject config);
 
-    public Connector(JSONObject config){
+    public Connector(JSONObject config) {
         this.config = config;
         parseJSON(this.config);
     }
