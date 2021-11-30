@@ -1,7 +1,9 @@
-package app;
+package app.SparkSQL;
 
 import org.apache.spark.sql.*;
 import org.json.simple.JSONObject;
+
+import app.Connector;
 
 public class SparkSQLImporter extends Connector {
     private String executionMode;
