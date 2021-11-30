@@ -3,7 +3,15 @@ package app.SparkSQL;
 import org.apache.spark.sql.*;
 import org.json.simple.JSONObject;
 
+import java.io.File;
+import java.io.FileFilter;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.RegexFileFilter;
+
 import app.Connector;
+import app.hdfs.HDFSUtils;
+import app.utils.Constants;
 
 public class SparkSQLImporter extends Connector {
     private String executionMode;
@@ -32,5 +40,17 @@ public class SparkSQLImporter extends Connector {
 
         // save results in CSV directory - use *.csv to get file with results
         sqlQuery.write().csv("data/sparksqlExtracted.csv");
+        // File csvDirectory = new File("data/sparksqlExtracted.csv");
+        // FileFilter regex = new RegexFileFilter("*.csv");
+        // File[] csvFile = csvDirectory.listFiles(regex);
+        // System.out.println("FINDING FILE");
+        // System.out.println(csvFile);
+        try {
+            // HDFSUtils.copyFromLocal(csvFile[0].getName(), Constants.WORKING_DIR, "addr",
+            // 8080);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }
