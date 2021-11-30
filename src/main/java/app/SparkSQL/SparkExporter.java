@@ -26,9 +26,8 @@ public class SparkExporter extends Connector {
 
     public void execute() {
         // connect to spark sql url, run query on it
-        // SparkContext conf = new SparkContext(this.executionMode, this.appName);
+        SparkContext conf = new SparkContext(this.executionMode, this.appName);
         // TODO: Fix the file path to hdfs
         conf.addFile("hdfs://output/");
-
     }
 }
