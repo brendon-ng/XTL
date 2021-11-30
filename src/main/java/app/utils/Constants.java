@@ -1,4 +1,4 @@
-package utils;
+package app.utils;
 
 public final class Constants {
     private Constants() {

@@ -1,12 +1,22 @@
-package hdfs;
+package app.hdfs;
 
-import utils.Constants;
+import org.json.simple.JSONObject;
+
+import app.Connector;
+import app.utils.Constants;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.FileUtil;
 import org.apache.hadoop.fs.Path;
 
-public class HDFS {
+public class HDFS extends Connector {
+    private String inputFilePath;
+
+    public HDFS(JSONObject config) {
+        super(config);
+        parseJSON(config);
+    }
+
     private FileSystem getFileSystem() throws Exception {
         Configuration configuration = getConfiguration();
         FileSystem fileSystem = FileSystem.get(configuration);
@@ -17,6 +27,22 @@ public class HDFS {
         Configuration configuration = new Configuration();
         configuration.set("fs.defaultFS", "hdfs://localhost:8020");
         return configuration;
+    }
+
+    @Override
+    protected void parseJSON(JSONObject config) {
+        this.inputFilePath = (String) config.get("inputFilepath");
+    }
+
+    @Override
+    public void execute() {
+        // TODO Auto-generated method stub
+        try{
+            extract(inputFilePath);
+        } catch(Exception e) {
+            System.out.println("Error extracting from HDFS");
+            System.out.println(e.toString());
+        }
     }
 
     protected void copyDirectory(String srcDir, String dstDir) throws Exception {
@@ -38,7 +64,6 @@ public class HDFS {
             throw new Exception("HDFS: No extract filepath specified");
         }
         copyDirectory(filepath, Constants.WORKING_DIR);
-        createDir("/example");
     }
 
     // Send working directory data to final location

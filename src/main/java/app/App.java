@@ -6,14 +6,13 @@ import java.io.IOException;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import hdfs.HDFS;
+import app.hdfs.HDFS;
 
 public class App {
 
     private static JSONObject config;
     private static Connector importer;
     private static Connector exporter;
-    private static HDFS hdfs = new HDFS();
 
     private static void run(String[] args) throws IOException {
         // command line arguments - args[0] should be the file path to config file
@@ -39,12 +38,7 @@ public class App {
                     importer = new SparkSQLImporter(importerConfig);
                     break;
                 case "HDFS":
-                    try {
-                        hdfs.extract("/test");
-                    } catch(Exception e) {
-                        System.out.println("Error when extracting from HDFS");
-                        System.out.println(e.toString());
-                    }
+                    importer = new HDFS(importerConfig);
                     break;
                 default:
                     System.out.println("Invalid Importer Platform");
