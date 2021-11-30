@@ -26,12 +26,12 @@ public class HDFSImporter extends Connector {
 
     @Override
     public void execute() {
-        // try {
-        // extract(inputFilePath);
-        // } catch (Exception e) {
-        // System.out.println("Error extracting from HDFS");
-        // System.out.println(e.toString());
-        // }
+        try {
+            extract(inputFilePath);
+        } catch (Exception e) {
+            System.out.println("Error extracting from HDFS");
+            System.out.println(e.toString());
+        }
     }
 
     // Extract data from HDFS directory filepath to working directory
