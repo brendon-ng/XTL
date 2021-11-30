@@ -1,4 +1,3 @@
-
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -6,13 +5,14 @@ import org.apache.spark.sql.*;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import hdfs.HDFS;
 
 /**
  * Hello world!
  *
  */
 public class App {
-
+    private static HDFS hdfs = new HDFS();
     /**
      * Extract SparkSQL data from CSV file
      * 
@@ -40,12 +40,19 @@ public class App {
         sqlQuery.write().csv("data/sparksqlExtracted.csv");
     }
 
-    static public void extractData(String platform, JSONObject config) throws IOException {
+    public static void extractData(String platform, JSONObject config) throws IOException {
         switch (platform) {
             case "SPARKSQL":
                 extractSparkSql((String) config.get("executionMode"), (String) config.get("inputFilepath"),
                         (String) config.get("query"));
                 break;
+            case "HDFS":
+                try {
+                    hdfs.extract("/test");
+                } catch(Exception e) {
+                    System.out.println("Error when extracting from HDFS");
+                    System.out.println(e.toString());
+                }
             // add other cases here
             default:
                 break;
