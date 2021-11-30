@@ -1,7 +1,7 @@
 build:
 	mvn clean package
 
-run: build
+run: 
 	java -cp target/XTL-1.0.jar app.App resources/config.json
 
 clean:
