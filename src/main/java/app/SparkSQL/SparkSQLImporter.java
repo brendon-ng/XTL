@@ -48,8 +48,11 @@ public class SparkSQLImporter extends Connector {
             // System.out.println(csvFile[0].getName());
 
             // TODO: Test HDFS copying, fill in interface for middle
-            HDFSUtils.copyFromLocal(csvFile[0].getName(), Constants.WORKING_DIR, "addr",
-                    8080);
+            for (int i = 0; i < csvFile.length; i++) {
+                HDFSUtils.copyFromLocal(csvFile[i].getName(), Constants.WORKING_DIR, "addr",
+                        8080);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
