@@ -1,6 +1,7 @@
 {
     "importer": {
         "platform": "HIVE",
+        "address": "localhost",
         "port": "10000",
         "query": "SELECT * FROM pokes"
     },

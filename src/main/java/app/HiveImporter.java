@@ -19,6 +19,7 @@ public class HiveImporter extends Connector
 
     private String port;
     private String query;
+    private String address;
 
     public HiveImporter(JSONObject config) {
         super(config);
@@ -28,6 +29,7 @@ public class HiveImporter extends Connector
     protected void parseJSON(JSONObject config) {
         this.port = (String) config.get("port");
         this.query = (String) config.get("query");
+        this.address = (String) config.get("address");
     }
 
     public void execute()
@@ -45,7 +47,7 @@ public class HiveImporter extends Connector
         try
         {
             // establish connection to Hive
-            String connectionUrl = String.format("jdbc:hive2://localhost:%s", this.port);
+            String connectionUrl = String.format("jdbc:hive2://%s:%s", this.address, this.port);
             Connection con = DriverManager.getConnection(connectionUrl, "", "");
             Statement statement = con.createStatement();
 
