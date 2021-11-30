@@ -2,6 +2,7 @@ package app.hdfs;
 
 import org.json.simple.JSONObject;
 
+import java.lang.Integer;
 import app.Connector;
 import app.utils.Constants;
 import org.apache.hadoop.conf.Configuration;
@@ -9,10 +10,12 @@ import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.FileUtil;
 import org.apache.hadoop.fs.Path;
 
-public class HDFS extends Connector {
+public class HDFSImporter extends Connector {
     private String inputFilePath;
+    private String HDFSaddress;
+    private int HDFSport;
 
-    public HDFS(JSONObject config) {
+    public HDFSImporter(JSONObject config) {
         super(config);
         parseJSON(config);
     }
@@ -25,21 +28,22 @@ public class HDFS extends Connector {
 
     private Configuration getConfiguration() throws Exception {
         Configuration configuration = new Configuration();
-        configuration.set("fs.defaultFS", "hdfs://localhost:8020");
+        configuration.set("fs.defaultFS", String.format("hdfs://%s:%d", this.HDFSaddress, this.HDFSport));
         return configuration;
     }
 
     @Override
     protected void parseJSON(JSONObject config) {
         this.inputFilePath = (String) config.get("inputFilepath");
+        this.HDFSaddress = (String) config.get("address");
+        this.HDFSport = Integer.parseInt((String) config.get("port"));
     }
 
     @Override
     public void execute() {
-        // TODO Auto-generated method stub
-        try{
+        try {
             extract(inputFilePath);
-        } catch(Exception e) {
+        } catch (Exception e) {
             System.out.println("Error extracting from HDFS");
             System.out.println(e.toString());
         }
@@ -68,7 +72,7 @@ public class HDFS extends Connector {
 
     // Send working directory data to final location
     public void load(String filepath) throws Exception {
-        if(filepath.isEmpty()) {
+        if (filepath.isEmpty()) {
             throw new Exception("HDFS: No load filepath specified");
         }
         copyDirectory(Constants.WORKING_DIR, filepath);

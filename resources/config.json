@@ -1,9 +1,9 @@
 {
     "importer": {
         "platform": "HDFS",
-        "executionMode": "local",
         "inputFilepath": "/test",
-        "query": "SELECT service FROM XTLInput"
+        "address": "127.0.0.1",
+        "port": "9000"
     },
     "exporter": {
         "platform": "Coming Soon"
