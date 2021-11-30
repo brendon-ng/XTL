@@ -32,7 +32,7 @@ public class SparkSQLImporter extends Connector {
     public void execute() {
         // connect to spark sql url, run query on it
         SparkSession spark = SparkSession.builder().appName("XTL Spark SQL app").master(executionMode).getOrCreate();
-        Dataset<Row> df = spark.read().option("header", "true").csv(inputFilePath);
+        Dataset<Row> df = spark.read().format("csv").option("header", "true").load(inputFilePath);
         df.createOrReplaceTempView("XTLInput");
 
         // run initial query on file
@@ -40,6 +40,7 @@ public class SparkSQLImporter extends Connector {
 
         // save results in CSV directory - use *.csv to get file with results
         sqlQuery.write().csv("data/sparksqlExtracted.csv");
+
         // File csvDirectory = new File("data/sparksqlExtracted.csv");
         // FileFilter regex = new RegexFileFilter("*.csv");
         // File[] csvFile = csvDirectory.listFiles(regex);

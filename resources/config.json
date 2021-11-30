@@ -3,11 +3,7 @@
         "platform": "SPARKSQL",
         "executionMode": "local",
         "inputFilepath": "resources/SparkSQLOutputData.csv",
-<<<<<<< HEAD
-        "query": "SELECT * FROM XTLInput"
-=======
         "query": "SELECT service FROM XTLInput"
->>>>>>> 8d7a6bd... OOP Class Structure and Build (#6)
     },
     "exporter": {
         "platform": "Coming Soon"
