@@ -78,23 +78,23 @@ public class HiveImporter extends Connector {
                 // https://idineshkrishnan.com/convert-resultset-to-csv-in-java/
 
                 // creating the csv format
-		        CSVFormat format = CSVFormat.DEFAULT.withRecordSeparator("\n");
+                CSVFormat format = CSVFormat.DEFAULT.withRecordSeparator("\n");
 
                 // creating the file object
-		        File file = new File(csvOutputFileName);
+                File file = new File(csvOutputFileName);
 
                 // creating file writer object
-		        FileWriter fw = new FileWriter(file);
+                FileWriter fw = new FileWriter(file);
 
                 // creating the csv printer object
-		        CSVPrinter printer = new CSVPrinter(fw, format);
+                CSVPrinter printer = new CSVPrinter(fw, format);
 
                 // printing the result in 'CSV' file
-		        printer.printRecords(result);
+                printer.printRecords(result);
 
                 // closing all resources
-		        fw.close();
-		        printer.close();
+                fw.close();
+                printer.close();
 
                 /*
                 CSVWriter csvWriter = new CSVWriter(new FileWriter(csvOutputFileName));
