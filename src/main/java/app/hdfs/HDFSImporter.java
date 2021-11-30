@@ -3,12 +3,11 @@ package app.hdfs;
 import org.json.simple.JSONObject;
 
 import java.lang.Integer;
+
 import app.Connector;
 import app.utils.Constants;
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.FileSystem;
-import org.apache.hadoop.fs.FileUtil;
-import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.fs.*;
 
 public class HDFSImporter extends Connector {
     private String inputFilePath;
@@ -56,10 +55,23 @@ public class HDFSImporter extends Connector {
     }
 
     // create directory with name "dir"
-    protected void createDir(String dir) throws Exception {
+    public void createDir(String dir) throws Exception {
         FileSystem fileSystem = getFileSystem();
         Path path = new Path(dir);
         fileSystem.mkdirs(path);
+    }
+
+    public void createFile(String filePath) throws Exception {
+        FileSystem fileSystem = getFileSystem();
+        Path path = new Path(filePath);
+        fileSystem.create(path);
+    }
+
+    public void copyFromLocal(String src, String dst) throws Exception {
+        FileSystem fileSystem = getFileSystem();
+        Path source = new Path(src);
+        Path destination = new Path(dst);
+        fileSystem.copyFromLocalFile(source, destination);
     }
 
     // Extract data from HDFS directory filepath to working directory
