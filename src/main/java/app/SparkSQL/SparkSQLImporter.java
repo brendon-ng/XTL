@@ -7,7 +7,7 @@ import app.Connector;
 
 public class SparkSQLImporter extends Connector {
     private String executionMode;
-    private String inputFilePath;
+    private String inputFilepath;
     private String query;
 
     public SparkSQLImporter(JSONObject config) {
@@ -17,14 +17,14 @@ public class SparkSQLImporter extends Connector {
 
     protected void parseJSON(JSONObject config) {
         this.executionMode = (String) config.get("executionMode");
-        this.inputFilePath = (String) config.get("inputFilepath");
+        this.inputFilepath = (String) config.get("inputFilepath");
         this.query = (String) config.get("query");
     }
 
     public void execute() {
         // connect to spark sql url, run query on it
         SparkSession spark = SparkSession.builder().appName("XTL Spark SQL app").master(executionMode).getOrCreate();
-        Dataset<Row> df = spark.read().option("header", "true").csv(inputFilePath);
+        Dataset<Row> df = spark.read().option("header", "true").csv(inputFilepath);
         df.createOrReplaceTempView("XTLInput");
 
         // run initial query on file
