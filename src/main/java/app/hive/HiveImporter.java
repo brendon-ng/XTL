@@ -1,5 +1,6 @@
-package app;
+package app.hive;
 import org.json.simple.JSONObject;
+import app.Connector;
 
 // for Hive
 import java.sql.SQLException;

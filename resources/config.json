@@ -1,12 +1,16 @@
 {
     "importer": {
-        "platform": "SPARKSQL",
-        "inputFilepath": "resources/SparkSQLOutputData.csv",
-        "executionMode": "local",
-        "query": "SELECT service FROM XTLInput"
+        "platform": "HIVE",
+        "address": "localhost",
+        "port": "10000",
+        "query": "SELECT * FROM pokes"
     },
     "exporter": {
-        "platform": "Coming Soon"
+        "platform": "HIVE",
+        "address": "localhost",
+        "port": "10000",
+        "inputCSVPath": "data/hive/hive_output.csv",
+        "tableName": "HIVE_OUTPUT",
+        "tableColumns": "(COLUMN1 STRING, COLUMN2 STRING)"
     }
-    
 }

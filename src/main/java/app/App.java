@@ -12,6 +12,7 @@ import org.json.simple.parser.ParseException;
 import app.SparkSQL.*;
 import app.files.*;
 import app.hdfs.*;
+import app.hive.*;
 
 public class App {
 
@@ -61,6 +62,9 @@ public class App {
                 case "HDFS":
                     exporter = new HDFSExporter(exporterConfig);
                     break;
+                case "HIVE":
+                    exporter = new HiveExporter(exporterConfig);
+                    break;
                 case "FILE":
                     exporter = new FileExporter(exporterConfig);
                     break;
@@ -78,7 +82,7 @@ public class App {
 
         importer.execute();
         // transformation.execute();
-        // exporter.execute();
+        exporter.execute();
     }
 
     public static void main(String[] args) throws IOException {
