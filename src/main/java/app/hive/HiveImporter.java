@@ -11,8 +11,10 @@ import java.sql.DriverManager;
 
 // for writing to a CSV
 import java.io.File;
-import com.opencsv.CSVWriter;
+//import com.opencsv.CSVWriter;
 import java.io.FileWriter;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 
 import app.Connector;
 
@@ -57,6 +59,8 @@ public class HiveImporter extends Connector {
              * System.out.println("Col2=" + result.getString(2));
              * }
              */
+            
+            // trying https://idineshkrishnan.com/convert-resultset-to-csv-in-java/
 
             // write the result to a csv
             try {
@@ -71,10 +75,33 @@ public class HiveImporter extends Connector {
 
                 csvOutputFileObj.createNewFile();
 
+                // https://idineshkrishnan.com/convert-resultset-to-csv-in-java/
+
+                // creating the csv format
+		        CSVFormat format = CSVFormat.DEFAULT.withRecordSeparator("\n");
+
+                // creating the file object
+		        File file = new File(csvOutputFileName);
+
+                // creating file writer object
+		        FileWriter fw = new FileWriter(file);
+
+                // creating the csv printer object
+		        CSVPrinter printer = new CSVPrinter(fw, format);
+
+                // printing the result in 'CSV' file
+		        printer.printRecords(result);
+
+                // closing all resources
+		        fw.close();
+		        printer.close();
+
+                /*
                 CSVWriter csvWriter = new CSVWriter(new FileWriter(csvOutputFileName));
                 csvWriter.writeAll(result, true);
                 csvWriter.flush();
                 csvWriter.close();
+                */
             } catch (Exception e) {
                 e.printStackTrace();
             }
