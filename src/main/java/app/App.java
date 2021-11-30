@@ -8,6 +8,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import app.SparkSQL.*;
+import app.files.*;
 import app.hdfs.*;
 
 public class App {
@@ -42,12 +43,21 @@ public class App {
                 case "HDFS":
                     importer = new HDFSImporter(importerConfig);
                     break;
+                case "FILE":
+                    importer = new FileImporter(importerConfig);
+                    break;
                 default:
                     System.out.println("Invalid Importer Platform");
                     break;
             }
 
             switch ((String) exporterConfig.get("platform")) {
+                case "HDFS":
+                    exporter = new HDFSExporter(exporterConfig);
+                    break;
+                case "FILE":
+                    exporter = new FileExporter(exporterConfig);
+                    break;
                 default:
                     System.out.println("Invalid Exporter Platform");
                     break;
