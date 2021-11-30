@@ -39,6 +39,7 @@ public class App {
                     importer = new SparkSQLImporter(importerConfig);
                     break;
                 case "HIVE":
+                    BasicConfigurator.configure();
                     importer = new HiveImporter(importerConfig);
                     break;
                 default:
@@ -65,9 +66,6 @@ public class App {
     }
 
     public static void main(String[] args) throws IOException {
-        // for hive
-        BasicConfigurator.configure();
-
         run(args);
     }
 }
