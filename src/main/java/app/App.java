@@ -6,7 +6,9 @@ import java.io.IOException;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import app.hdfs.HDFSImporter;
+
+import app.SparkSQL.*;
+import app.hdfs.*;
 
 public class App {
 
