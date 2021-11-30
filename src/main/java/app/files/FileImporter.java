@@ -1,18 +1,17 @@
-package app.hdfs;
+package app.files;
 
 import org.json.simple.JSONObject;
 
-import java.lang.Integer;
-
 import app.Connector;
+import app.hdfs.HDFSUtils;
 import app.utils.Constants;
 
-public class HDFSImporter extends Connector {
+public class FileImporter extends Connector {
     private String inputFilepath;
     private String HDFSaddress;
     private int HDFSport;
 
-    public HDFSImporter(JSONObject config) {
+    public FileImporter(JSONObject config) {
         super(config);
         parseJSON(config);
     }
@@ -27,18 +26,10 @@ public class HDFSImporter extends Connector {
     @Override
     public void execute() {
         try {
-            extract(inputFilepath);
+            HDFSUtils.copyFromLocal(inputFilepath, Constants.WORKING_DIR, this.HDFSaddress, this.HDFSport);
         } catch (Exception e) {
             System.out.println("Error extracting from HDFS");
             System.out.println(e.toString());
         }
-    }
-
-    // Extract data from HDFS directory filepath to working directory
-    public void extract(String filepath) throws Exception {
-        if (filepath.isEmpty()) {
-            throw new Exception("HDFS: No extract filepath specified");
-        }
-        HDFSUtils.copyDirectory(filepath, Constants.WORKING_DIR, this.HDFSaddress, this.HDFSport);
     }
 }
