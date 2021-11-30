@@ -2,24 +2,22 @@ package app.hdfs;
 
 import org.json.simple.JSONObject;
 
-import java.lang.Integer;
-
 import app.Connector;
 import app.utils.Constants;
 
-public class HDFSImporter extends Connector {
-    private String inputFilePath;
+public class HDFSExporter extends Connector{
+    private String outputFilePath;
     private String HDFSaddress;
     private int HDFSport;
 
-    public HDFSImporter(JSONObject config) {
+    public HDFSExporter(JSONObject config) {
         super(config);
         parseJSON(config);
     }
 
     @Override
     protected void parseJSON(JSONObject config) {
-        this.inputFilePath = (String) config.get("inputFilepath");
+        this.outputFilePath = (String) config.get("outputFilePath");
         this.HDFSaddress = (String) config.get("address");
         this.HDFSport = Integer.parseInt((String) config.get("port"));
     }
@@ -27,18 +25,18 @@ public class HDFSImporter extends Connector {
     @Override
     public void execute() {
         try {
-            extract(inputFilePath);
+            load(outputFilePath);
         } catch (Exception e) {
             System.out.println("Error extracting from HDFS");
             System.out.println(e.toString());
         }
     }
 
-    // Extract data from HDFS directory filepath to working directory
-    public void extract(String filepath) throws Exception {
+    // Send working directory data to final location
+    public void load(String filepath) throws Exception {
         if (filepath.isEmpty()) {
-            throw new Exception("HDFS: No extract filepath specified");
+            throw new Exception("HDFS: No load filepath specified");
         }
-        HDFSUtils.copyDirectory(filepath, Constants.WORKING_DIR, this.HDFSaddress, this.HDFSport);
+        HDFSUtils.copyDirectory(Constants.WORKING_DIR, filepath, this.HDFSaddress, this.HDFSport);
     }
 }
