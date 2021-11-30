@@ -15,7 +15,7 @@ import app.utils.Constants;
 
 public class SparkSQLImporter extends Connector {
     private String executionMode;
-    private String inputFilePath;
+    private String inputFilepath;
     private String query;
 
     public SparkSQLImporter(JSONObject config) {
@@ -25,7 +25,7 @@ public class SparkSQLImporter extends Connector {
 
     protected void parseJSON(JSONObject config) {
         this.executionMode = (String) config.get("executionMode");
-        this.inputFilePath = (String) config.get("inputFilepath");
+        this.inputFilepath = (String) config.get("inputFilepath");
         this.query = (String) config.get("query");
     }
 
