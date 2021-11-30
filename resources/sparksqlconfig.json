@@ -1,0 +1,12 @@
+{
+    "importer": {
+        "platform": "SPARKSQL",
+        "executionMode": "local",
+        "inputFilepath": "resources/SparkSQLOutputData.csv",
+        "query": "SELECT service FROM XTLInput"
+    },
+    "exporter": {
+        "platform": "Coming Soon"
+    }
+    
+}

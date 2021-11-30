@@ -22,11 +22,23 @@ public class HDFSUtils {
         FileUtil.copy(fileSystem, new Path(srcDir), fileSystem, new Path(dstDir), false, configuration);
     }
 
+    public static void rename(String src, String dst, String address, int port) throws Exception {
+        FileSystem fileSystem = HDFSUtils.getFileSystem(address, port);
+        fileSystem.rename(new Path(src), new Path(dst));
+    }
+
     // create directory with name "dir"
     public static void createDir(String dir, String address, int port) throws Exception {
         FileSystem fileSystem = getFileSystem(address, port);
         Path path = new Path(dir);
         fileSystem.mkdirs(path);
+    }
+
+    // delete directory with name "dir"
+    public static void deleteDir(String dir, String address, int port) throws Exception {
+        FileSystem fileSystem = getFileSystem(address, port);
+        Path path = new Path(dir);
+        fileSystem.delete(path, true);
     }
 
     public static void createFile(String filePath, String address, int port) throws Exception {
