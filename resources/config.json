@@ -1,6 +1,6 @@
 {
     "importer": {
-        "platform": "SPARKSQL",
+        "platform": "HIVE",
         "executionMode": "local",
         "inputFilepath": "resources/SparkSQLOutputData.csv",
         "query": "SELECT service FROM XTLInput"

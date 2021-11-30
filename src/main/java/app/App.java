@@ -36,6 +36,9 @@ public class App {
                 case "SPARKSQL":
                     importer = new SparkSQLImporter(importerConfig);
                     break;
+                case "HIVE":
+                    importer = new HiveImporter(importerConfig);
+                    break;
                 default:
                     System.out.println("Invalid Importer Platform");
                     break;
