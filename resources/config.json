@@ -1,9 +1,9 @@
 {
     "importer": {
-        "platform": "SPARKSQL",
-        "executionMode": "local",
-        "inputFilepath": "resources/SparkSQLOutputData.csv",
-        "query": "SELECT service FROM XTLInput"
+        "platform": "HDFS",
+        "inputFilepath": "/test",
+        "address": "127.0.0.1",
+        "port": "9000"
     },
     "exporter": {
         "platform": "Coming Soon"
