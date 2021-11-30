@@ -44,7 +44,8 @@ public class App {
                     } catch(Exception e) {
                         System.out.println("Error when extracting from HDFS");
                         System.out.println(e.toString());
-                }
+                    }
+                    break;
                 default:
                     System.out.println("Invalid Importer Platform");
                     break;
