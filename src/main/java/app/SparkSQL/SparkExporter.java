@@ -7,7 +7,8 @@ import app.Connector;
 
 /**
  * Config file requirements:
- * 
+ * - execution mode = local, master, etc.
+ * - app name to be deployed to
  */
 public class SparkExporter extends Connector {
     // export from HDFS to Spark SQL
