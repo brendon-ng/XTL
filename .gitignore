@@ -4,3 +4,4 @@ data/
 target/
 outbound_data/
 dependency-reduced-pom.xml
+.vscode/

@@ -3,6 +3,8 @@ package app;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+
+import org.apache.log4j.BasicConfigurator;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -39,6 +41,10 @@ public class App {
             switch ((String) importerConfig.get("platform")) {
                 case "SPARKSQL":
                     importer = new SparkSQLImporter(importerConfig);
+                    break;
+                case "HIVE":
+                    BasicConfigurator.configure();
+                    importer = new HiveImporter(importerConfig);
                     break;
                 case "HDFS":
                     importer = new HDFSImporter(importerConfig);
