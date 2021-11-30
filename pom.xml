@@ -29,6 +29,7 @@
       <groupId>org.apache.spark</groupId>
       <artifactId>spark-sql_2.12</artifactId>
       <version>3.2.0</version>
+<<<<<<< HEAD
     </dependency>
     <!-- HDFS dependency -->
     <dependency>
@@ -50,6 +51,8 @@
       <groupId>org.apache.hadoop</groupId>
       <artifactId>hadoop-client</artifactId>
       <version>2.6.0</version>
+=======
+>>>>>>> 8d7a6bd... OOP Class Structure and Build (#6)
     </dependency>
     <dependency>
       <groupId>com.googlecode.json-simple</groupId>

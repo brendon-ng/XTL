@@ -7,9 +7,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import app.SparkSQL.*;
-import app.hdfs.*;
-
 public class App {
 
     private static JSONObject config;
@@ -38,9 +35,6 @@ public class App {
             switch ((String) importerConfig.get("platform")) {
                 case "SPARKSQL":
                     importer = new SparkSQLImporter(importerConfig);
-                    break;
-                case "HDFS":
-                    importer = new HDFSImporter(importerConfig);
                     break;
                 default:
                     System.out.println("Invalid Importer Platform");
