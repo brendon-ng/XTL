@@ -10,11 +10,14 @@ import org.json.simple.parser.ParseException;
 import app.SparkSQL.*;
 import app.files.*;
 import app.hdfs.*;
+import app.transform.*;
+import app.utils.Constants;
 
 public class App {
 
     private static JSONObject config;
     private static Connector importer;
+    private static Connector transformation;
     private static Connector exporter;
 
     private static void run(String[] args) throws IOException {
@@ -51,6 +54,10 @@ public class App {
                     break;
             }
 
+            if (transformationConfig != null) {
+                transformation = new Transformation(transformationConfig);
+            }
+
             switch ((String) exporterConfig.get("platform")) {
                 case "HDFS":
                     exporter = new HDFSExporter(exporterConfig);
@@ -70,8 +77,36 @@ public class App {
             e.printStackTrace();
         }
 
+        // Set HDFS environment
+        try {
+            HDFSUtils.deleteDir(Constants.WORKING_DIR, Constants.HDFS_WORKING_ADDR, Constants.HDFS_WORKING_PORT);
+            HDFSUtils.createDir(Constants.WORKING_DIR, Constants.HDFS_WORKING_ADDR, Constants.HDFS_WORKING_PORT);
+            HDFSUtils.deleteDir(Constants.OUTGOING_DIR, Constants.HDFS_WORKING_ADDR, Constants.HDFS_WORKING_PORT);
+        } catch (Exception e) {
+            System.out.println(e);
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+        System.out.println("EXECUTING IMPORTER");
         importer.execute();
-        // transformation.execute();
+
+        if (transformation != null) {
+            System.out.println("EXECUTING TRANSFORMATION");
+            transformation.execute();
+        } else {
+            System.out.println("NO TRANSFORMATION CONFIG FOUND: No transform will be performed");
+            try {
+                HDFSUtils.rename(Constants.WORKING_DIR, Constants.OUTGOING_DIR, Constants.HDFS_WORKING_ADDR,
+                        Constants.HDFS_WORKING_PORT);
+            } catch (Exception e) {
+                System.out.println(e);
+                e.printStackTrace();
+                System.exit(1);
+            }
+        }
+
+        // System.out.println("EXECUTING EXPORTER");
         // exporter.execute();
     }
 
