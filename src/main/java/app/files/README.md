@@ -6,12 +6,12 @@
 
 File Importer:
 
-- `platform`: `File`
+- `platform`: `FILE`
 - `inputFilepath`: input filepath for data
 
 File Exporter:
 
-- `platform`: `File`
+- `platform`: `FILE`
 - `outputFilepath`: output filepath for data
 
 Example:
