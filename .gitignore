@@ -5,3 +5,4 @@ target/
 outbound_data/
 dependency-reduced-pom.xml
 .vscode/
+hive-env/docker-hive

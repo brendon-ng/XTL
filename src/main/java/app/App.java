@@ -12,7 +12,7 @@ import org.json.simple.parser.ParseException;
 import app.SparkSQL.*;
 import app.files.*;
 import app.hdfs.*;
-import app.hive.HiveImporter;
+import app.hive.*;
 import app.transform.*;
 import app.utils.Constants;
 
