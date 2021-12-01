@@ -18,3 +18,22 @@ Spark Exporter:
 - `executionMode`: string to specify where Spark should run
   - e.g. `local`, `master`, `local[2]`, `{ipAddress}:{port}`
 - `appName`: application name for Spark
+
+Example:
+
+```
+{
+    "importer": {
+        "platform": "SPARKSQL",
+        "executionMode": "local",
+        "inputFilepath": "resources/SparkSQLOutputData.csv",
+        "query": "SELECT service FROM XTLInput"
+    },
+    "exporter": {
+        "platform": "SPARK",
+        "executionMode": "local",
+        "appName": "xtlApp"
+    }
+
+}
+```
