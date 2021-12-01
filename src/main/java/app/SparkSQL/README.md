@@ -2,6 +2,8 @@
 
 ## Configuration file information required for Spark connectors
 
+**All of this must be in JSON format**
+
 Spark SQL Importer:
 
 - `platform`: `SPARK`
