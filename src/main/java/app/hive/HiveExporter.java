@@ -1,6 +1,8 @@
 package app.hive;
 import org.json.simple.JSONObject;
 import app.Connector;
+import app.hdfs.HDFSUtils;
+import app.utils.Constants;
 
 // for Hive
 import java.sql.SQLException;
@@ -14,7 +16,6 @@ public class HiveExporter extends Connector
 
     private String address;
     private String port;
-    private String inputCSVPath;
     private String tableName;
     private String tableColumns;
     private String dockerContainerID;
@@ -27,7 +28,6 @@ public class HiveExporter extends Connector
     protected void parseJSON(JSONObject config) {
         this.address = (String) config.get("address");
         this.port = (String) config.get("port");
-        this.inputCSVPath = (String) config.get("inputCSVPath");
         this.tableName = (String) config.get("tableName");
         this.tableColumns = (String) config.get("tableColumns");
         this.dockerContainerID = (String) config.get("dockerContainerID");
@@ -47,6 +47,14 @@ public class HiveExporter extends Connector
 
         try
         {
+            // copy CSV from HDFS to local "data/hive/hive_output.csv"
+            String localCSVdest = "data/hive/hive_output.csv";
+            try {
+                HDFSUtils.copyToLocal(Constants.OUTGOING_DIR, localCSVdest, Constants.HDFS_WORKING_ADDR, Constants.HDFS_WORKING_PORT);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             // establish connection to Hive
             String connectionUrl = String.format("jdbc:hive2://%s:%s", this.address, this.port);
             Connection con = DriverManager.getConnection(connectionUrl, "", "");
@@ -65,7 +73,7 @@ public class HiveExporter extends Connector
 
             String dockerCSVPath = "/opt/hive/hive_input.csv";
             String dockerPath = this.dockerContainerID + ":" + dockerCSVPath;
-            processBuilder.command("docker", "cp", this.inputCSVPath, dockerPath);
+            processBuilder.command("docker", "cp", localCSVdest, dockerPath);
 
             try {
 

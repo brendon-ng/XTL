@@ -9,7 +9,6 @@
         "platform": "HIVE",
         "address": "localhost",
         "port": "10000",
-        "inputCSVPath": "data/hive/hive_output.csv",
         "tableName": "HIVE_OUTPUT",
         "tableColumns": "(COLUMN1 STRING, COLUMN2 STRING)",
         "dockerContainerID": "035f7e57561b"

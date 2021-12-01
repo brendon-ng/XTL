@@ -11,11 +11,15 @@ import java.sql.DriverManager;
 
 // for writing to a CSV
 import java.io.File;
-import com.opencsv.CSVWriter;
 import java.io.FileWriter;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 
-public class HiveImporter extends Connector
-{
+// for HDFS
+import app.hdfs.HDFSUtils;
+import app.utils.Constants;
+
+public class HiveImporter extends Connector {
     private static String driverName = "org.apache.hive.jdbc.HiveDriver";
 
     private String port;
@@ -33,20 +37,15 @@ public class HiveImporter extends Connector
         this.address = (String) config.get("address");
     }
 
-    public void execute()
-    {
-        try
-        {
+    public void execute() {
+        try {
             Class.forName(driverName);
-        }
-        catch (ClassNotFoundException e)
-        {
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
             System.exit(1);
         }
-    
-        try
-        {
+
+        try {
             // establish connection to Hive
             String connectionUrl = String.format("jdbc:hive2://%s:%s", this.address, this.port);
             Connection con = DriverManager.getConnection(connectionUrl, "", "");
@@ -55,21 +54,12 @@ public class HiveImporter extends Connector
             // execute query
             ResultSet result = statement.executeQuery(this.query);
 
-            /*
-            while (result.next()) {
-                System.out.println("Col1=" + result.getString(1));
-                System.out.println("Col2=" + result.getString(2));
-            }
-            */
-
             // write the result to a csv
-            try
-            {
+            try {
                 String csvOutputFileName = "data/hive/hive_output.csv";
                 File csvOutputFileObj = new File(csvOutputFileName);
 
-                if (!csvOutputFileObj.getParentFile().exists())
-                {
+                if (!csvOutputFileObj.getParentFile().exists()) {
                     csvOutputFileObj.getParentFile().mkdirs();
                 }
 
@@ -77,24 +67,44 @@ public class HiveImporter extends Connector
 
                 csvOutputFileObj.createNewFile();
 
-                CSVWriter csvWriter = new CSVWriter(new FileWriter(csvOutputFileName));
-                csvWriter.writeAll(result, true);
-                csvWriter.flush();
-                csvWriter.close();
-            }
-            catch (Exception e)
-            {
+                // https://idineshkrishnan.com/convert-resultset-to-csv-in-java/
+
+                // creating the csv format
+                CSVFormat format = CSVFormat.DEFAULT.withRecordSeparator("\n");
+
+                // creating the file object
+                File file = new File(csvOutputFileName);
+
+                // creating file writer object
+                FileWriter fw = new FileWriter(file);
+
+                // creating the csv printer object
+                CSVPrinter printer = new CSVPrinter(fw, format);
+
+                // printing the result in 'CSV' file
+                printer.printRecords(result);
+
+                // closing all resources
+                fw.close();
+                printer.close();
+
+                // using code from SparkSQLImporter
+                try {
+                    HDFSUtils.copyFromLocal(csvOutputFileName, Constants.WORKING_DIR, Constants.HDFS_WORKING_ADDR,
+                            Constants.HDFS_WORKING_PORT);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-            
+
             result.close();
             statement.close();
             con.close();
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             e.printStackTrace();
             System.exit(1);
-        }    
+        }
     }
 }

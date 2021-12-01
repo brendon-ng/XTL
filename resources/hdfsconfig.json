@@ -1,0 +1,12 @@
+{
+    "importer": {
+        "platform": "HDFS",
+        "address": "127.0.0.1",
+        "port": "8020",
+        "inputFilepath": "/test/hw_25000.csv"
+    },
+    "exporter": {
+        "platform": "Coming Soon"
+    }
+    
+}
