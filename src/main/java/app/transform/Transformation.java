@@ -30,6 +30,7 @@ public class Transformation extends Connector {
                     "-output", Constants.OUTGOING_DIR,
                     "-mapper", mapper,
                     "-reducer", reducer).start();
+            p.waitFor();
         } catch (IOException e) {
             System.out.println(e);
         } catch (Exception e) {

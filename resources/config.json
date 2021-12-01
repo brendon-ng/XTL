@@ -1,16 +1,18 @@
 {
     "importer": {
-        "platform": "FILE",
+        "platform": "HDFS",
         "address": "127.0.0.1",
         "port": "8020",
-        "inputFilepath": "/Users/brendon/Downloads/mlb_teams.csv"
+        "inputFilepath": "/test/SparkSQLOutputData.csv"
+    },
+    "exporter": {
+        "platform": "SPARK",
+        "executionMode": "local",
+        "appName": "xtltest"
     },
     "transformation": {
         "mapper": "cat",
         "reducer": "wc"
-    },
-    "exporter": {
-        "platform": "Coming Soon"
     }
     
 }

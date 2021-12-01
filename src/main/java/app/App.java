@@ -12,6 +12,7 @@ import org.json.simple.parser.ParseException;
 import app.SparkSQL.*;
 import app.files.*;
 import app.hdfs.*;
+import app.hive.HiveImporter;
 import app.transform.*;
 import app.utils.Constants;
 
@@ -71,6 +72,9 @@ public class App {
                 case "FILE":
                     exporter = new FileExporter(exporterConfig);
                     break;
+                case "SPARK":
+                    exporter = new SparkExporter(exporterConfig);
+                    break;
                 default:
                     System.out.println("Invalid Exporter Platform");
                     break;
@@ -112,8 +116,8 @@ public class App {
             }
         }
 
-        // System.out.println("EXECUTING EXPORTER");
-        // exporter.execute();
+        System.out.println("EXECUTING EXPORTER");
+        exporter.execute();
     }
 
     public static void main(String[] args) throws IOException {

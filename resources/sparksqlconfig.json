@@ -6,7 +6,9 @@
         "query": "SELECT service FROM XTLInput"
     },
     "exporter": {
-        "platform": "Coming Soon"
+        "platform": "SPARK",
+        "executionMode": "local",
+        "appName": "xtlApp"
     }
     
 }
