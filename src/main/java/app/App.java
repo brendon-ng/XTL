@@ -69,6 +69,9 @@ public class App {
                 case "HDFS":
                     exporter = new HDFSExporter(exporterConfig);
                     break;
+                case "HIVE":
+                    exporter = new HiveExporter(exporterConfig);
+                    break;
                 case "FILE":
                     exporter = new FileExporter(exporterConfig);
                     break;

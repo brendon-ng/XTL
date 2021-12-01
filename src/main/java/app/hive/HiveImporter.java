@@ -1,7 +1,5 @@
 package app.hive;
-
 import org.json.simple.JSONObject;
-
 import app.Connector;
 
 // for Hive
@@ -19,11 +17,7 @@ import org.apache.commons.csv.CSVPrinter;
 
 // for HDFS
 import app.hdfs.HDFSUtils;
-import java.io.FileFilter;
-import org.apache.commons.io.filefilter.RegexFileFilter;
 import app.utils.Constants;
-
-import app.Connector;
 
 public class HiveImporter extends Connector {
     private static String driverName = "org.apache.hive.jdbc.HiveDriver";
@@ -59,13 +53,6 @@ public class HiveImporter extends Connector {
 
             // execute query
             ResultSet result = statement.executeQuery(this.query);
-
-            /*
-             * while (result.next()) {
-             * System.out.println("Col1=" + result.getString(1));
-             * System.out.println("Col2=" + result.getString(2));
-             * }
-             */
 
             // write the result to a csv
             try {
