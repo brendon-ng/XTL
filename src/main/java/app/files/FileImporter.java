@@ -8,8 +8,6 @@ import app.utils.Constants;
 
 public class FileImporter extends Connector {
     private String inputFilepath;
-    private String HDFSaddress;
-    private int HDFSport;
 
     public FileImporter(JSONObject config) {
         super(config);
@@ -19,14 +17,13 @@ public class FileImporter extends Connector {
     @Override
     protected void parseJSON(JSONObject config) {
         this.inputFilepath = (String) config.get("inputFilepath");
-        this.HDFSaddress = (String) config.get("address");
-        this.HDFSport = Integer.parseInt((String) config.get("port"));
     }
 
     @Override
     public void execute() {
         try {
-            HDFSUtils.copyFromLocal(inputFilepath, Constants.WORKING_DIR, this.HDFSaddress, this.HDFSport);
+            HDFSUtils.copyFromLocal(inputFilepath, Constants.WORKING_DIR, Constants.HDFS_WORKING_ADDR,
+                    Constants.HDFS_WORKING_PORT);
         } catch (Exception e) {
             System.out.println("Error extracting from HDFS");
             System.out.println(e.toString());
