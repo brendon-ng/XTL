@@ -11,10 +11,15 @@ import java.sql.DriverManager;
 
 // for writing to a CSV
 import java.io.File;
-//import com.opencsv.CSVWriter;
 import java.io.FileWriter;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
+
+// for HDFS
+import app.hdfs.HDFSUtils;
+import java.io.FileFilter;
+import org.apache.commons.io.filefilter.RegexFileFilter;
+import app.utils.Constants;
 
 import app.Connector;
 
@@ -96,12 +101,21 @@ public class HiveImporter extends Connector {
                 fw.close();
                 printer.close();
 
-                /*
-                CSVWriter csvWriter = new CSVWriter(new FileWriter(csvOutputFileName));
-                csvWriter.writeAll(result, true);
-                csvWriter.flush();
-                csvWriter.close();
-                */
+                // using code from SparkSQLImporter
+                File csvDirectory = new File(csvOutputFileName);
+                FileFilter regex = new RegexFileFilter(".*.csv");
+                File[] csvFile = csvDirectory.listFiles(regex);
+        
+                try {
+                    for (int i = 0; i < csvFile.length; i++) {
+                        String formattedPath = String.format("data/sparksqlExtracted.csv/%s", csvFile[i].getName());
+                        HDFSUtils.copyFromLocal(formattedPath, Constants.WORKING_DIR, Constants.HDFS_WORKING_ADDR,
+                                Constants.HDFS_WORKING_PORT);
+                    }
+        
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
