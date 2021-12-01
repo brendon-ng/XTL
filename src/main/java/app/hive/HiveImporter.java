@@ -102,17 +102,9 @@ public class HiveImporter extends Connector {
                 printer.close();
 
                 // using code from SparkSQLImporter
-                File csvDirectory = new File(csvOutputFileName);
-                FileFilter regex = new RegexFileFilter(".*.csv");
-                File[] csvFile = csvDirectory.listFiles(regex);
-        
                 try {
-                    for (int i = 0; i < csvFile.length; i++) {
-                        String formattedPath = String.format("data/hive/hive_output.csv/%s", csvFile[i].getName());
-                        HDFSUtils.copyFromLocal(formattedPath, Constants.WORKING_DIR, Constants.HDFS_WORKING_ADDR,
-                                Constants.HDFS_WORKING_PORT);
-                    }
-        
+                    HDFSUtils.copyFromLocal(csvOutputFileName, Constants.WORKING_DIR, Constants.HDFS_WORKING_ADDR,
+                            Constants.HDFS_WORKING_PORT);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
