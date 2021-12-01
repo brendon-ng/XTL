@@ -1,11 +1,12 @@
 package app.hdfs;
 
 import org.json.simple.JSONObject;
+import org.apache.hadoop.fs.*;
 
 import app.Connector;
 import app.utils.Constants;
 
-public class HDFSExporter extends Connector{
+public class HDFSExporter extends Connector {
     private String outputFilepath;
     private String HDFSaddress;
     private int HDFSport;
@@ -37,6 +38,21 @@ public class HDFSExporter extends Connector{
         if (filepath.isEmpty()) {
             throw new Exception("HDFS: No load filepath specified");
         }
-        HDFSUtils.copyDirectory(Constants.WORKING_DIR, filepath, this.HDFSaddress, this.HDFSport);
+
+        String path = String.format("hdfs://%s:%d%s", Constants.HDFS_WORKING_ADDR, Constants.HDFS_WORKING_PORT,
+                Constants.OUTGOING_DIR);
+        try {
+            FileSystem fs = HDFSUtils.getFileSystem(Constants.HDFS_WORKING_ADDR,
+                    Constants.HDFS_WORKING_PORT);
+
+            FileStatus listFiles[] = fs.listStatus(new Path(path));
+            Path filepaths[] = FileUtil.stat2Paths(listFiles);
+            for (int i = 0; i < filepaths.length; i++) {
+                HDFSUtils.rename(filepaths[i].toString(), filepath, Constants.HDFS_WORKING_ADDR,
+                        Constants.HDFS_WORKING_PORT);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

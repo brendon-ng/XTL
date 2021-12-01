@@ -18,6 +18,13 @@
   </properties>
 
   <dependencies>
+
+    <dependency>
+      <!-- Hive dependency -->
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.17</version>
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -35,7 +42,7 @@
       <artifactId>json-simple</artifactId>
       <version>1.1.1</version>
     </dependency>
-    <dependency>
+      <dependency>
       <!-- Hive dependency -->
       <groupId>org.apache.hive</groupId>
       <artifactId>hive-jdbc</artifactId>
@@ -43,15 +50,9 @@
     </dependency>
     <dependency>
       <!-- Hive dependency -->
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>1.2.17</version>
-    </dependency>
-    <dependency>
-      <!-- Hive dependency -->
-      <groupId>com.opencsv</groupId>
-      <artifactId>opencsv</artifactId>
-      <version>4.1</version>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-csv</artifactId>
+      <version>1.4</version>
     </dependency>
   </dependencies>
 

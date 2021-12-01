@@ -13,8 +13,17 @@ import java.sql.DriverManager;
 
 // for writing to a CSV
 import java.io.File;
-import com.opencsv.CSVWriter;
 import java.io.FileWriter;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
+
+// for HDFS
+import app.hdfs.HDFSUtils;
+import java.io.FileFilter;
+import org.apache.commons.io.filefilter.RegexFileFilter;
+import app.utils.Constants;
+
+import app.Connector;
 
 public class HiveImporter extends Connector {
     private static String driverName = "org.apache.hive.jdbc.HiveDriver";
@@ -71,10 +80,34 @@ public class HiveImporter extends Connector {
 
                 csvOutputFileObj.createNewFile();
 
-                CSVWriter csvWriter = new CSVWriter(new FileWriter(csvOutputFileName));
-                csvWriter.writeAll(result, true);
-                csvWriter.flush();
-                csvWriter.close();
+                // https://idineshkrishnan.com/convert-resultset-to-csv-in-java/
+
+                // creating the csv format
+                CSVFormat format = CSVFormat.DEFAULT.withRecordSeparator("\n");
+
+                // creating the file object
+                File file = new File(csvOutputFileName);
+
+                // creating file writer object
+                FileWriter fw = new FileWriter(file);
+
+                // creating the csv printer object
+                CSVPrinter printer = new CSVPrinter(fw, format);
+
+                // printing the result in 'CSV' file
+                printer.printRecords(result);
+
+                // closing all resources
+                fw.close();
+                printer.close();
+
+                // using code from SparkSQLImporter
+                try {
+                    HDFSUtils.copyFromLocal(csvOutputFileName, Constants.WORKING_DIR, Constants.HDFS_WORKING_ADDR,
+                            Constants.HDFS_WORKING_PORT);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
