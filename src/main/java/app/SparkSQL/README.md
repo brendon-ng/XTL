@@ -6,7 +6,7 @@
 
 Spark SQL Importer:
 
-- `platform`: `SPARK`
+- `platform`: `SPARKSQL`
 - `executionMode`: string to specify where Spark should run
   - e.g. `local`, `master`, `local[2]`, `{ipAddress}:{port}`
 - `inputFilepath`: input filepath for data
