@@ -1,0 +1,16 @@
+{
+    "importer": {
+        "platform": "FILE",
+        "address": "127.0.0.1",
+        "port": "8020",
+        "inputFilepath": "/Users/brendon/Downloads/mlb_teams.csv"
+    },
+    "transformation": {
+        "mapper": "cat",
+        "reducer": "wc"
+    },
+    "exporter": {
+        "platform": "Coming Soon"
+    }
+    
+}

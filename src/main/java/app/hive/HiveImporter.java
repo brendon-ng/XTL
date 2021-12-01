@@ -2,6 +2,8 @@ package app.hive;
 
 import org.json.simple.JSONObject;
 
+import app.Connector;
+
 // for Hive
 import java.sql.SQLException;
 import java.sql.Connection;
@@ -64,8 +66,6 @@ public class HiveImporter extends Connector {
              * System.out.println("Col2=" + result.getString(2));
              * }
              */
-            
-            // trying https://idineshkrishnan.com/convert-resultset-to-csv-in-java/
 
             // write the result to a csv
             try {
@@ -108,7 +108,7 @@ public class HiveImporter extends Connector {
         
                 try {
                     for (int i = 0; i < csvFile.length; i++) {
-                        String formattedPath = String.format("data/sparksqlExtracted.csv/%s", csvFile[i].getName());
+                        String formattedPath = String.format("data/hive/hive_output.csv/%s", csvFile[i].getName());
                         HDFSUtils.copyFromLocal(formattedPath, Constants.WORKING_DIR, Constants.HDFS_WORKING_ADDR,
                                 Constants.HDFS_WORKING_PORT);
                     }

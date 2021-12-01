@@ -1,12 +1,18 @@
 {
     "importer": {
-        "platform": "HIVE",
-        "address": "localhost",
-        "port": "10000",
-        "query": "SELECT * FROM pokes"
+        "platform": "HDFS",
+        "address": "127.0.0.1",
+        "port": "8020",
+        "inputFilepath": "/test/SparkSQLOutputData.csv"
     },
     "exporter": {
-        "platform": "Coming Soon"
+        "platform": "SPARK",
+        "executionMode": "local",
+        "appName": "xtltest"
+    },
+    "transformation": {
+        "mapper": "cat",
+        "reducer": "wc"
     }
     
 }
