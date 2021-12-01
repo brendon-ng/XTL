@@ -5,7 +5,6 @@ import app.Connector;
 // for Hive
 import java.sql.SQLException;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.DriverManager;
 
@@ -18,6 +17,7 @@ public class HiveExporter extends Connector
     private String inputCSVPath;
     private String tableName;
     private String tableColumns;
+    private String dockerContainerID;
 
     public HiveExporter(JSONObject config) {
         super(config);
@@ -30,6 +30,7 @@ public class HiveExporter extends Connector
         this.inputCSVPath = (String) config.get("inputCSVPath");
         this.tableName = (String) config.get("tableName");
         this.tableColumns = (String) config.get("tableColumns");
+        this.dockerContainerID = (String) config.get("dockerContainerID");
     }
 
     public void execute()
@@ -56,19 +57,34 @@ public class HiveExporter extends Connector
             statement.execute(dropTableIfExistsQuery);
 
             // create table
-            String createTableQuery = String.format("CREATE TABLE %s %s", this.tableName, this.tableColumns);
+            String createTableQuery = String.format("CREATE TABLE %s %s row format delimited fields terminated by ','", this.tableName, this.tableColumns);
             statement.execute(createTableQuery);
 
+            // execute a shell command to copy CSV into the docker container
+            ProcessBuilder processBuilder = new ProcessBuilder();
+
+            String dockerCSVPath = "/opt/hive/hive_input.csv";
+            String dockerPath = this.dockerContainerID + ":" + dockerCSVPath;
+            processBuilder.command("docker", "cp", this.inputCSVPath, dockerPath);
+
+            try {
+
+                Process process = processBuilder.start();
+                process.waitFor();
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+
             // load CSV data into table
-            // TODO: figure this out because the path is in the container so we need to get the csv in the container
-            /*
             String loadCSVDataQuery = String.format(
                 "LOAD DATA LOCAL INPATH '%s' OVERWRITE INTO TABLE %s",
-                this.inputCSVPath,
+                dockerCSVPath,
                 this.tableName);
             statement.execute(loadCSVDataQuery);
-            */
-
+            
+            // close connections
             statement.close();
             con.close();
         }
