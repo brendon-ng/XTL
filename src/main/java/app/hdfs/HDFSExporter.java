@@ -42,13 +42,14 @@ public class HDFSExporter extends Connector {
         String path = String.format("hdfs://%s:%d%s", Constants.HDFS_WORKING_ADDR, Constants.HDFS_WORKING_PORT,
                 Constants.OUTGOING_DIR);
         try {
+            HDFSUtils.createDir(filepath, Constants.HDFS_WORKING_ADDR, Constants.HDFS_WORKING_PORT);
             FileSystem fs = HDFSUtils.getFileSystem(Constants.HDFS_WORKING_ADDR,
                     Constants.HDFS_WORKING_PORT);
 
             FileStatus listFiles[] = fs.listStatus(new Path(path));
             Path filepaths[] = FileUtil.stat2Paths(listFiles);
             for (int i = 0; i < filepaths.length; i++) {
-                HDFSUtils.rename(filepaths[i].toString(), filepath, Constants.HDFS_WORKING_ADDR,
+                HDFSUtils.copyDirectory(filepaths[i].toString(), filepath, Constants.HDFS_WORKING_ADDR,
                         Constants.HDFS_WORKING_PORT);
             }
         } catch (Exception e) {

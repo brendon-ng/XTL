@@ -1,5 +1,7 @@
 package app.hive;
+
 import org.json.simple.JSONObject;
+import org.apache.hadoop.fs.*;
 import app.Connector;
 import app.hdfs.HDFSUtils;
 import app.utils.Constants;
@@ -10,8 +12,7 @@ import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.DriverManager;
 
-public class HiveExporter extends Connector
-{
+public class HiveExporter extends Connector {
     private static String driverName = "org.apache.hive.jdbc.HiveDriver";
 
     private String address;
@@ -33,24 +34,35 @@ public class HiveExporter extends Connector
         this.dockerContainerID = (String) config.get("dockerContainerID");
     }
 
-    public void execute()
-    {
-        try
-        {
+    public void execute() {
+        try {
             Class.forName(driverName);
-        }
-        catch (ClassNotFoundException e)
-        {
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
             System.exit(1);
         }
 
-        try
-        {
+        try {
             // copy CSV from HDFS to local "data/hive/hive_output.csv"
-            String localCSVdest = "data/hive/hive_output.csv";
+            String localCSVdest = "data/hive";
+            String localCSV = "data/hive/hive_output.csv";
+            String path = String.format("hdfs://%s:%d%s", Constants.HDFS_WORKING_ADDR, Constants.HDFS_WORKING_PORT,
+                    Constants.OUTGOING_DIR);
             try {
-                HDFSUtils.copyToLocal(Constants.OUTGOING_DIR, localCSVdest, Constants.HDFS_WORKING_ADDR, Constants.HDFS_WORKING_PORT);
+                FileSystem fs = HDFSUtils.getFileSystem(Constants.HDFS_WORKING_ADDR,
+                        Constants.HDFS_WORKING_PORT);
+                FileStatus listFiles[] = fs.listStatus(new Path(path));
+                Path filepaths[] = FileUtil.stat2Paths(listFiles);
+                for (int i = 0; i < filepaths.length; i++) {
+                    if (filepaths[i].toString().matches(".*\\.csv")) {
+                        System.out.println(filepaths[i].toString());
+                        HDFSUtils.rename(filepaths[i].toString(),
+                                String.format("%s/hive_output.csv", Constants.OUTGOING_DIR),
+                                Constants.HDFS_WORKING_ADDR, Constants.HDFS_WORKING_PORT);
+                        HDFSUtils.copyToLocal(Constants.OUTGOING_DIR, localCSVdest, Constants.HDFS_WORKING_ADDR,
+                                Constants.HDFS_WORKING_PORT);
+                    }
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -65,41 +77,38 @@ public class HiveExporter extends Connector
             statement.execute(dropTableIfExistsQuery);
 
             // create table
-            String createTableQuery = String.format("CREATE TABLE %s %s row format delimited fields terminated by ','", this.tableName, this.tableColumns);
+            String createTableQuery = String.format("CREATE TABLE %s %s row format delimited fields terminated by ','",
+                    this.tableName, this.tableColumns);
             statement.execute(createTableQuery);
 
             // execute a shell command to copy CSV into the docker container
             ProcessBuilder processBuilder = new ProcessBuilder();
 
-            String dockerCSVPath = "/opt/hive/hive_input.csv";
+            String dockerCSVPath = "/opt/hive/hive_output.csv";
             String dockerPath = this.dockerContainerID + ":" + dockerCSVPath;
-            processBuilder.command("docker", "cp", localCSVdest, dockerPath);
+            processBuilder.command("docker", "cp", localCSV, dockerPath);
 
             try {
 
                 Process process = processBuilder.start();
                 process.waitFor();
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
             // load CSV data into table
             String loadCSVDataQuery = String.format(
-                "LOAD DATA LOCAL INPATH '%s' OVERWRITE INTO TABLE %s",
-                dockerCSVPath,
-                this.tableName);
+                    "LOAD DATA LOCAL INPATH '%s' OVERWRITE INTO TABLE %s",
+                    dockerCSVPath,
+                    this.tableName);
             statement.execute(loadCSVDataQuery);
-            
+
             // close connections
             statement.close();
             con.close();
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             e.printStackTrace();
             System.exit(1);
-        } 
+        }
     }
 }
