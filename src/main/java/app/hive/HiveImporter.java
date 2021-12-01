@@ -1,5 +1,8 @@
-package app;
+package app.hive;
+
 import org.json.simple.JSONObject;
+
+import app.Connector;
 
 // for Hive
 import java.sql.SQLException;
@@ -13,8 +16,7 @@ import java.io.File;
 import com.opencsv.CSVWriter;
 import java.io.FileWriter;
 
-public class HiveImporter extends Connector
-{
+public class HiveImporter extends Connector {
     private static String driverName = "org.apache.hive.jdbc.HiveDriver";
 
     private String port;
@@ -32,20 +34,15 @@ public class HiveImporter extends Connector
         this.address = (String) config.get("address");
     }
 
-    public void execute()
-    {
-        try
-        {
+    public void execute() {
+        try {
             Class.forName(driverName);
-        }
-        catch (ClassNotFoundException e)
-        {
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
             System.exit(1);
         }
-    
-        try
-        {
+
+        try {
             // establish connection to Hive
             String connectionUrl = String.format("jdbc:hive2://%s:%s", this.address, this.port);
             Connection con = DriverManager.getConnection(connectionUrl, "", "");
@@ -55,20 +52,18 @@ public class HiveImporter extends Connector
             ResultSet result = statement.executeQuery(this.query);
 
             /*
-            while (result.next()) {
-                System.out.println("Col1=" + result.getString(1));
-                System.out.println("Col2=" + result.getString(2));
-            }
-            */
+             * while (result.next()) {
+             * System.out.println("Col1=" + result.getString(1));
+             * System.out.println("Col2=" + result.getString(2));
+             * }
+             */
 
             // write the result to a csv
-            try
-            {
+            try {
                 String csvOutputFileName = "data/hive/hive_output.csv";
                 File csvOutputFileObj = new File(csvOutputFileName);
 
-                if (!csvOutputFileObj.getParentFile().exists())
-                {
+                if (!csvOutputFileObj.getParentFile().exists()) {
                     csvOutputFileObj.getParentFile().mkdirs();
                 }
 
@@ -80,20 +75,16 @@ public class HiveImporter extends Connector
                 csvWriter.writeAll(result, true);
                 csvWriter.flush();
                 csvWriter.close();
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-            
+
             result.close();
             statement.close();
             con.close();
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             e.printStackTrace();
             System.exit(1);
-        }    
+        }
     }
 }
