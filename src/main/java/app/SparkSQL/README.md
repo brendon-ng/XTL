@@ -34,6 +34,5 @@ Example:
         "executionMode": "local",
         "appName": "xtlApp"
     }
-
 }
 ```
