@@ -1,0 +1,14 @@
+{
+    "importer": {
+        "platform": "FILE",
+        "inputFilepath": "/Users/brendon/Downloads/mlb_teams1.csv"
+    },
+    "exporter": {
+        "platform": "HIVE",
+        "address": "127.0.0.1",
+        "port": "10000",
+        "tableName": "Demo",
+        "tableColumns": "(Team STRING, Payroll FLOAT, Wins FLOAT)",
+        "dockerContainerID": "1275976ade06"
+    }
+}

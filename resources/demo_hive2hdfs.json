@@ -1,0 +1,18 @@
+{
+    "importer": {
+        "platform": "HIVE",
+        "address": "127.0.0.1",
+        "port": "10000",
+        "query": "SELECT * FROM pokes"
+    },
+    "transformation": {
+        "mapper": "cat",
+        "reducer": "\"grep val_5.*\""
+    },
+    "exporter": {
+        "platform": "HDFS",
+        "address": "127.0.0.1",
+        "port": "8020",
+        "outputFilepath": "/demo"
+    }
+}

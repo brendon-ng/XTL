@@ -2,7 +2,8 @@ build:
 	mvn clean package
 
 run: 
-	java -cp target/XTL-1.0.jar app.App resources/config.json
+	rm -fr data
+	java -cp target/XTL-1.0.jar app.App $(filter-out $@,$(MAKECMDGOALS))
 
 clean:
 	rm -fr data
