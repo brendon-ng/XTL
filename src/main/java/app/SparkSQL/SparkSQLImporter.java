@@ -45,16 +45,15 @@ public class SparkSQLImporter extends Connector {
         File[] csvFile = csvDirectory.listFiles(regex);
 
         try {
-            // System.out.println(csvFile[0].getName());
-
-            // TODO: Test HDFS copying, fill in interface for middle
             for (int i = 0; i < csvFile.length; i++) {
-                HDFSUtils.copyFromLocal(csvFile[i].getName(), Constants.WORKING_DIR, "addr",
-                        8080);
+                String formattedPath = String.format("data/sparksqlExtracted.csv/%s", csvFile[i].getName());
+                HDFSUtils.copyFromLocal(formattedPath, Constants.WORKING_DIR, Constants.HDFS_WORKING_ADDR,
+                        Constants.HDFS_WORKING_PORT);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+        spark.close();
     }
 }
