@@ -5,11 +5,11 @@ import org.json.simple.JSONObject;
 import app.Connector;
 import app.hdfs.HDFSUtils;
 import app.utils.Constants;
+import io.netty.util.Constant;
+import javassist.CtMethod.ConstParameter;
 
 public class FileExporter extends Connector {
     private String outputFilepath;
-    private String HDFSaddress;
-    private int HDFSport;
 
     public FileExporter(JSONObject config) {
         super(config);
@@ -19,14 +19,13 @@ public class FileExporter extends Connector {
     @Override
     protected void parseJSON(JSONObject config) {
         this.outputFilepath = (String) config.get("outputFilepath");
-        this.HDFSaddress = (String) config.get("address");
-        this.HDFSport = Integer.parseInt((String) config.get("port"));
     }
 
     @Override
     public void execute() {
         try {
-            HDFSUtils.copyFromLocal(Constants.WORKING_DIR, this.outputFilepath, this.HDFSaddress, this.HDFSport);
+            HDFSUtils.copyFromLocal(Constants.OUTGOING_DIR, this.outputFilepath, Constants.HDFS_WORKING_ADDR,
+                    Constants.HDFS_WORKING_PORT);
         } catch (Exception e) {
             System.out.println("Error extracting from HDFS");
             System.out.println(e.toString());
