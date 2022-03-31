@@ -24,7 +24,7 @@ public class FileExporter extends Connector {
     @Override
     public void execute() {
         try {
-            HDFSUtils.copyFromLocal(Constants.OUTGOING_DIR, this.outputFilepath, Constants.HDFS_WORKING_ADDR,
+            HDFSUtils.copyToLocal(Constants.OUTGOING_DIR, this.outputFilepath, Constants.HDFS_WORKING_ADDR,
                     Constants.HDFS_WORKING_PORT);
         } catch (Exception e) {
             System.out.println("Error extracting from HDFS");

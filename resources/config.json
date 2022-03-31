@@ -1,18 +1,16 @@
 {
     "importer": {
-        "platform": "HDFS",
-        "address": "127.0.0.1",
-        "port": "8020",
-        "inputFilepath": "/test/SparkSQLOutputData.csv"
+        "platform": "HIVE",
+        "address": "localhost",
+        "port": "10000",
+        "query": "SELECT * FROM pokes"
     },
     "exporter": {
-        "platform": "SPARK",
-        "executionMode": "local",
-        "appName": "xtltest"
-    },
-    "transformation": {
-        "mapper": "cat",
-        "reducer": "wc"
+        "platform": "HIVE",
+        "address": "localhost",
+        "port": "10000",
+        "tableName": "HIVE_OUTPUT",
+        "tableColumns": "(COLUMN1 STRING, COLUMN2 STRING)",
+        "dockerContainerID": "035f7e57561b"
     }
-    
 }
