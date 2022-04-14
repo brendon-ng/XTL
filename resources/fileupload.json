@@ -3,14 +3,33 @@
         "platform": "FILE",
         "address": "127.0.0.1",
         "port": "8020",
-        "inputFilepath": "/Users/brendon/Downloads/mlb_teams.csv"
+        "inputFilepath": "/Users/jivan/Downloads/mlb_teams.csv"
     },
     "transformation": {
-        "mapper": "cat",
-        "reducer": "wc"
+        "entries": [
+            {
+                "id": "a",
+                "mapper": "cat",
+                "reducer": "wc",
+                "dependencies": []
+            },
+            {
+                "id": "b",
+                "mapper": "cat",
+                "reducer": "wc",
+                "dependencies": ["a"]
+            },
+            {
+                "id": "c",
+                "mapper": "cat",
+                "reducer": "wc",
+                "dependencies": ["c"]
+            }
+        ]
     },
     "exporter": {
-        "platform": "Coming Soon"
+        "platform": "FILE",
+	    "outputFilepath": "/Users/jivan/Downloads/output.csv"
     }
     
 }
