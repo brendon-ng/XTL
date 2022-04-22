@@ -1,0 +1,1 @@
+{"importer":{"query":"SELECT service FROM XTLInput","inputFilepath":"resources\/SparkSQLOutputData.csv","executionMode":"local","platform":"SPARKSQL"},"exporter":{"platform":"FILE","outputFilepath":"\/Users\/ShMac\/Downloads\/test"},"label":1}
