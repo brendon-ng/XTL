@@ -10,6 +10,7 @@ public class HDFSExporter extends Connector {
     private String outputFilepath;
     private String HDFSaddress;
     private int HDFSport;
+    private String transformId;
 
     public HDFSExporter(JSONObject config) {
         super(config);
@@ -21,6 +22,7 @@ public class HDFSExporter extends Connector {
         this.outputFilepath = (String) config.get("outputFilepath");
         this.HDFSaddress = (String) config.get("address");
         this.HDFSport = Integer.parseInt((String) config.get("port"));
+        this.transformId = (String) config.get("transformId");
     }
 
     @Override
@@ -40,7 +42,7 @@ public class HDFSExporter extends Connector {
         }
 
         String path = String.format("hdfs://%s:%d%s", Constants.HDFS_WORKING_ADDR, Constants.HDFS_WORKING_PORT,
-                Constants.OUTGOING_DIR);
+                Constants.OUTGOING_DIR + "_" + this.transformId);
         try {
             HDFSUtils.createDir(filepath, Constants.HDFS_WORKING_ADDR, Constants.HDFS_WORKING_PORT);
             FileSystem fs = HDFSUtils.getFileSystem(Constants.HDFS_WORKING_ADDR,

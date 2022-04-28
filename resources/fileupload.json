@@ -11,7 +11,7 @@
                 "id": "a",
                 "mapper": "cat",
                 "reducer": "wc",
-                "dependencies": []
+                "dependencies": ["c"]
             },
             {
                 "id": "b",
@@ -23,12 +23,13 @@
                 "id": "c",
                 "mapper": "cat",
                 "reducer": "wc",
-                "dependencies": ["c"]
+                "dependencies": []
             }
         ]
     },
     "exporter": {
         "platform": "FILE",
+        "transformId": "b",
 	    "outputFilepath": "/Users/jivan/Downloads/output.csv"
     }
     

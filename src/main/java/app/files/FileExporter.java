@@ -10,6 +10,7 @@ import javassist.CtMethod.ConstParameter;
 
 public class FileExporter extends Connector {
     private String outputFilepath;
+    private String transformId;
 
     public FileExporter(JSONObject config) {
         super(config);
@@ -19,12 +20,13 @@ public class FileExporter extends Connector {
     @Override
     protected void parseJSON(JSONObject config) {
         this.outputFilepath = (String) config.get("outputFilepath");
+        this.transformId = (String) config.get("transformId");
     }
 
     @Override
     public void execute() {
         try {
-            HDFSUtils.copyToLocal(Constants.OUTGOING_DIR, this.outputFilepath, Constants.HDFS_WORKING_ADDR,
+            HDFSUtils.copyToLocal(Constants.OUTGOING_DIR + "_" + this.transformId, this.outputFilepath, Constants.HDFS_WORKING_ADDR,
                     Constants.HDFS_WORKING_PORT);
         } catch (Exception e) {
             System.out.println("Error extracting from HDFS");

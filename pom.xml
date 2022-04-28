@@ -32,6 +32,12 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+    <!-- Graph dependency -->
+			<groupId>org.jgrapht</groupId>
+			<artifactId>jgrapht-core</artifactId>
+			<version>1.2.0</version>
+		</dependency>
+    <dependency>
       <!-- Spark dependency -->
       <groupId>org.apache.spark</groupId>
       <artifactId>spark-sql_2.12</artifactId>

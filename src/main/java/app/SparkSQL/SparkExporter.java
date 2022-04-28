@@ -18,6 +18,7 @@ public class SparkExporter extends Connector {
     // export from HDFS to Spark
     private String executionMode;
     private String appName;
+    private String transformId;
 
     public SparkExporter(JSONObject config) {
         super(config);
@@ -28,6 +29,7 @@ public class SparkExporter extends Connector {
     protected void parseJSON(JSONObject config) {
         this.executionMode = (String) config.get("executionMode");
         this.appName = (String) config.get("appName");
+        this.transformId = (String) config.get("transformId");
     }
 
     @Override
@@ -38,7 +40,7 @@ public class SparkExporter extends Connector {
         SparkContext context = new SparkContext(conf);
 
         String path = String.format("hdfs://%s:%d%s", Constants.HDFS_WORKING_ADDR, Constants.HDFS_WORKING_PORT,
-                Constants.OUTGOING_DIR);
+                Constants.OUTGOING_DIR + "_" + this.transformId);
         try {
             FileSystem fs = HDFSUtils.getFileSystem(Constants.HDFS_WORKING_ADDR,
                     Constants.HDFS_WORKING_PORT);

@@ -20,6 +20,7 @@ public class HiveExporter extends Connector {
     private String tableName;
     private String tableColumns;
     private String dockerContainerID;
+    private String transformId;
 
     public HiveExporter(JSONObject config) {
         super(config);
@@ -32,6 +33,7 @@ public class HiveExporter extends Connector {
         this.tableName = (String) config.get("tableName");
         this.tableColumns = (String) config.get("tableColumns");
         this.dockerContainerID = (String) config.get("dockerContainerID");
+        this.transformId = (String) config.get("transformId");
     }
 
     public void execute() {
@@ -47,7 +49,7 @@ public class HiveExporter extends Connector {
             String localCSVdest = "data/hive";
             String localCSV = "data/hive/hive_output.csv";
             String path = String.format("hdfs://%s:%d%s", Constants.HDFS_WORKING_ADDR, Constants.HDFS_WORKING_PORT,
-                    Constants.OUTGOING_DIR);
+                    Constants.OUTGOING_DIR + "_" + this.transformId);
             try {
                 FileSystem fs = HDFSUtils.getFileSystem(Constants.HDFS_WORKING_ADDR,
                         Constants.HDFS_WORKING_PORT);
@@ -57,9 +59,9 @@ public class HiveExporter extends Connector {
                     if (filepaths[i].toString().matches(".*\\.csv")) {
                         System.out.println(filepaths[i].toString());
                         HDFSUtils.rename(filepaths[i].toString(),
-                                String.format("%s/hive_output.csv", Constants.OUTGOING_DIR),
+                                String.format("%s/hive_output.csv", Constants.OUTGOING_DIR + "_" + this.transformId),
                                 Constants.HDFS_WORKING_ADDR, Constants.HDFS_WORKING_PORT);
-                        HDFSUtils.copyToLocal(Constants.OUTGOING_DIR, localCSVdest, Constants.HDFS_WORKING_ADDR,
+                        HDFSUtils.copyToLocal(Constants.OUTGOING_DIR + "_" + this.transformId, localCSVdest, Constants.HDFS_WORKING_ADDR,
                                 Constants.HDFS_WORKING_PORT);
                     }
                 }
