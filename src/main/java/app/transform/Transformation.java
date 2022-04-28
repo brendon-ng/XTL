@@ -5,6 +5,7 @@ import org.json.simple.JSONArray;
 
 import java.io.IOException;
 import java.lang.ProcessBuilder;
+import java.lang.String;
 
 import app.Connector;
 import app.hdfs.*;
@@ -48,7 +49,7 @@ public class Transformation extends Connector {
                 }
             }
         }
-        System.out.println();
+        System.out.println("--------------------\n");
     }
     public Transformation(JSONObject config) {
         super(config);
@@ -94,21 +95,33 @@ public class Transformation extends Connector {
         while (iter.hasNext()) {
             SingleTransform vertex = iter.next();
             try {
-                String input = "";
+                String output = Constants.OUTGOING_DIR + "_" + vertex.id;
+
+                System.out.println("Vertex Id: " + vertex.id + "\noutput: " + output);
+                System.out.println("Mapper: " + vertex.mapper + "\nReducer: " + vertex.reducer + "\n");
+                
+                String command = "mapred streaming -output " + output + " -mapper " + vertex.mapper + " -reducer " + vertex.reducer;
+                
                 if(vertex.dependencies.size() == 0){
-                    input = Constants.WORKING_DIR;
+                    System.out.println("Input: " + Constants.WORKING_DIR);
+                    command += " -input " + (Constants.WORKING_DIR);
                 }
                 for(int i = 0; i < vertex.dependencies.size(); i++){
-                    input += Constants.OUTGOING_DIR + "_" + vertex.dependencies.get(i) + " ";
+                    System.out.println("Input: " + Constants.OUTGOING_DIR + "_" + vertex.dependencies.get(i));
+                    command += " -input " + Constants.OUTGOING_DIR + "_" + vertex.dependencies.get(i);
                 }
+                
+                String[] spl = command.split(" ");
 
-                System.out.println("Vertex Id: " + vertex.id + "\n" + "input: " + input);
-                Process p = new ProcessBuilder("mapred", "streaming",
-                        "-input", input,
-                        "-output", Constants.OUTGOING_DIR + "_" + vertex.id,
-                        "-mapper", vertex.mapper,
-                        "-reducer", vertex.reducer).start();
+                for(String each: spl) {
+                    System.out.println(each);
+                }
+                Process p = new ProcessBuilder(spl).inheritIO().start();
                 p.waitFor();
+
+                while(!HDFSUtils.checkExists(output + "/_SUCCESS",  Constants.HDFS_WORKING_ADDR, Constants.HDFS_WORKING_PORT)) {
+                    Thread.sleep(1000);
+                }
             } catch (IOException e) {
                 System.out.println(e);
             } catch (Exception e) {

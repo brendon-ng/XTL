@@ -60,4 +60,10 @@ public class HDFSUtils {
         Path destination = new Path(dst);
         fileSystem.copyToLocalFile(source, destination);
     }
+
+    public static boolean checkExists(String path, String address, int port) throws Exception {
+        FileSystem fileSystem = getFileSystem(address, port);
+        Path target = new Path(path);
+        return fileSystem.exists(target);
+    }
 }
