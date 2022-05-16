@@ -5,8 +5,6 @@ import org.json.simple.JSONObject;
 import app.Connector;
 import app.hdfs.HDFSUtils;
 import app.utils.Constants;
-import io.netty.util.Constant;
-import javassist.CtMethod.ConstParameter;
 
 public class FileExporter extends Connector {
     private String outputFilepath;
