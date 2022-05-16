@@ -25,6 +25,10 @@ public class App {
 
     private static void run(String[] args) throws IOException {
         // command line arguments - args[0] should be the file path to config file
+
+        System.out.println("RUNNING XTL on file: " + args[0]);
+        // return;
+
         if (args.length != 1) {
             IOException e = new IOException("Incorrect argument length");
             throw e;
@@ -92,9 +96,12 @@ public class App {
 
         // Set HDFS environment
         try {
-            HDFSUtils.deleteDir(Constants.WORKING_DIR, Constants.HDFS_WORKING_ADDR, Constants.HDFS_WORKING_PORT);
-            HDFSUtils.createDir(Constants.WORKING_DIR, Constants.HDFS_WORKING_ADDR, Constants.HDFS_WORKING_PORT);
-            HDFSUtils.deleteDir(Constants.OUTGOING_DIR, Constants.HDFS_WORKING_ADDR, Constants.HDFS_WORKING_PORT);
+            HDFSUtils.deleteDir(Constants.WORKING_DIR, Constants.HDFS_WORKING_ADDR,
+                    Constants.HDFS_WORKING_PORT);
+            HDFSUtils.createDir(Constants.WORKING_DIR, Constants.HDFS_WORKING_ADDR,
+                    Constants.HDFS_WORKING_PORT);
+            HDFSUtils.deleteDir(Constants.OUTGOING_DIR, Constants.HDFS_WORKING_ADDR,
+                    Constants.HDFS_WORKING_PORT);
         } catch (Exception e) {
             System.out.println(e);
             e.printStackTrace();
@@ -110,7 +117,8 @@ public class App {
         } else {
             System.out.println("NO TRANSFORMATION CONFIG FOUND: No transform will be performed");
             try {
-                HDFSUtils.rename(Constants.WORKING_DIR, Constants.OUTGOING_DIR, Constants.HDFS_WORKING_ADDR,
+                HDFSUtils.rename(Constants.WORKING_DIR, Constants.OUTGOING_DIR,
+                        Constants.HDFS_WORKING_ADDR,
                         Constants.HDFS_WORKING_PORT);
             } catch (Exception e) {
                 System.out.println(e);
@@ -121,9 +129,11 @@ public class App {
 
         System.out.println("EXECUTING EXPORTER");
         exporter.execute();
+
     }
 
     public static void main(String[] args) throws IOException {
+        // processDag(args);
         run(args);
     }
 }

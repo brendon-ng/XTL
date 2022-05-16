@@ -123,19 +123,12 @@ public class DAGProcessing {
         // Create single bash script with separated JSON files for DAG processing
         File dir = new File("dag");
         File exec = new File("dag/run/execute.sh");
-        exec.setExecutable(true);
         if (exec.createNewFile()) {
             System.out.println("Executable file created");
         }
+        exec.setExecutable(true);
         FileWriter fw = new FileWriter(exec);
-        // File[] fileArray = dir.listFiles();
-        // Hashtable<String, File> fileDictionary = new Hashtable<String, File>();
 
-        // for (File f : dir.listFiles()) {
-        // if (f.isFile()) {
-        // fw.write("make run " + f.getAbsolutePath() + "\n");
-        // }
-        // }
         for (int i = 0; i < order.size(); i++) {
             String label = order.get(i);
             String filepath = dict.get(label);
