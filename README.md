@@ -24,7 +24,15 @@ XTL - An Extensible Extract-Transform-Load (ETL) framework
 ## DAG-Enabled XTL
 Construct a pipeline of data processing tasks by specifying a Directed Acyclic Graph (DAG) structure for XTL steps. 
 
-Example 2-step XTL pipeline:
+#### Configuration Schema Overview
+- `graph` - object defining DAG
+  - `nodes` - array of all nodes identified by label
+  - `edges` - array of directed edges between nodes, indicated with `source` and `target` (edge goes from source to target node)
+- `configs` - array of configurations for individual nodes
+  - Identify each node object within the array with a unique label
+  - Use individual platform importer / transformation / exporter configuration schema to define steps
+
+#### Example 2-step XTL pipeline:
 ![Diagrams](https://user-images.githubusercontent.com/43181799/169713062-738d9ac9-93f3-4afe-9170-b34af034f22c.jpg)
 
 Corresponding configuration JSON:
@@ -77,5 +85,4 @@ Corresponding configuration JSON:
     }
 }]}
 ```
-
 For individual platforms' importer/transformation/exporter configuration schema, check their README files within their respective directories.
