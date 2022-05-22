@@ -1,1 +1,1 @@
-{"importer":{"query":"SELECT service FROM XTLInput2","inputFilepath":"resources\/SparkSQLOutputData.csv2","executionMode":"local2","platform":"SPARKSQL2"},"exporter":{"platform":"FILE","outputFilepath":"\/Users\/ShMac\/Downloads\/test"},"label":2}
+{"importer":{"address":"127.0.0.1","port":"8020","inputFilepath":"\/processing\/data.csv","platform":"HDFS"},"exporter":{"address":"127.0.0.1","port":"8020","platform":"HDFS","outputFilepath":"\/output"},"label":2,"transformation":{"filename":"data2.csv","mapper":"cat","reducer":"\"grep 10*\""}}

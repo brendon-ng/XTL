@@ -2,54 +2,49 @@
     "graph": {
         "nodes": [
             {"label": "1"},
-            {"label": "2"},
-            {"label": "thisislabel3"}
+            {"label": "2"}
         ],
         "edges": [
-            {"source": "2", "target": "1"},
-            {"source": "2", "target": "thisislabel3"}
+            {"source": "1", "target": "2"}
         ]
     },
     "configs":
     [{
-    "label": 1,
-    "importer": {
-        "platform": "SPARKSQL",
-        "executionMode": "local",
-        "inputFilepath": "resources/SparkSQLOutputData.csv",
-        "query": "SELECT service FROM XTLInput"
-    },
-    "exporter": {
-        "platform": "FILE",
-        "outputFilepath": "/Users/ShMac/Downloads/test"
+        "label": 1,
+        "importer": {
+            "platform": "FILE",
+            "address": "127.0.0.1",
+            "port": "8020",
+            "inputFilepath": "dir1/data.csv"
+        },
+        "exporter": {
+            "platform": "HDFS",
+            "address": "127.0.0.1",
+            "port": "8020",
+            "outputFilepath": "/processing"
+        }
     }
-    
-},
+    ,
 {
     "label": 2,
     "importer": {
-        "platform": "SPARKSQL2",
-        "executionMode": "local2",
-        "inputFilepath": "resources/SparkSQLOutputData.csv2",
-        "query": "SELECT service FROM XTLInput2"
+        "platform": "HDFS",
+        "address": "127.0.0.1",
+        "port": "8020",
+        "inputFilepath": "/processing/data.csv"
+    },
+    "transformation": {
+        "mapper": "cat",
+        "reducer": "\"grep 10*\"",
+        "filename": "data2.csv"
     },
     "exporter": {
-        "platform": "FILE",
-        "outputFilepath": "/Users/ShMac/Downloads/test"
+        "platform": "HDFS",
+        "address": "127.0.0.1",
+        "port": "8020",
+        "outputFilepath": "/output"
     }
-    
-},
-{
-    "label": "thisislabel3",
-    "importer": {
-        "platform": "SPARKSQL2",
-        "executionMode": "local2",
-        "inputFilepath": "resources/SparkSQLOutputData.csv2",
-        "query": "SELECT service FROM XTLInput2"
-    },
-    "exporter": {
-        "platform": "FILE",
-        "outputFilepath": "/Users/ShMac/Downloads/test"
-    }
-    
 }]}
+
+
+
