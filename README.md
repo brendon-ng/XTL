@@ -24,6 +24,8 @@ XTL - An Extensible Extract-Transform-Load (ETL) framework
 ## DAG-Enabled XTL
 Construct a pipeline of data processing tasks by specifying a Directed Acyclic Graph (DAG) structure for XTL steps. 
 
+[Full capstone report](https://github.com/brendon-ng/XTL/files/8790030/XTL_CapstoneReport_updated.pdf)
+
 #### Configuration Schema Overview
 - `graph` - object defining DAG
   - `nodes` - array of all nodes identified by label
