@@ -6,6 +6,9 @@ The XTL project is an extensible Extract-Transform-Load (ETL) framework that str
 
 The motivation for the project is to minimize the programming needed for data transfer and processing, making the user experience as configuration-based as possible. XTL has the potential to be a useful product for teams that deal with data in large or small amounts, providing the option to easily perform simple transfers without the need for developer involvement.
 
+## Read More in Our Paper
+Linked [Here](https://github.com/brendon-ng/XTL/blob/main/XTL_Paper.pdf)
+
 ## Usage
 
 [Install Maven](https://maven.apache.org/install.html) and make sure you can call `mvn` from terminal.  
